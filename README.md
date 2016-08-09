@@ -8,7 +8,9 @@ All our CSE libraries rely on you [setting up your own server](https://docs.adye
 
 ## Example
 
-For you convenience we've included an example app in this repository that can be used as a reference while integrating. To run the example project, clone the repo and run it from your IDE.
+For you convenience we've included an example app in this repository that can be used as a reference while integrating.
+
+To run the example project, clone the repo and run it from your IDE.
 
 ## Installation
 
