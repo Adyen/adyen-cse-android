@@ -75,6 +75,9 @@ public class Card {
         this.generationTime = generationTime;
     }
 
+    /*
+    * Method that serializes the card data using our CSE class.
+    * */
     public String serialize(String publicKey) throws EncrypterException {
         JSONObject cardJson = new JSONObject();
         String encryptedData = null;
@@ -98,7 +101,10 @@ public class Card {
         return encryptedData;
     }
 
-    public String encryptData(String data, String publicKey) throws EncrypterException {
+    /*
+    * Helper method that calls the ClientSideEncrypter encrypt method
+    * */
+    private String encryptData(String data, String publicKey) throws EncrypterException {
         String encryptedData = null;
 
         try {
