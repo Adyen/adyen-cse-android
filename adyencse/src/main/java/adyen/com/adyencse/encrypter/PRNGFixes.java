@@ -1,4 +1,4 @@
-package adyen.com.cse.encrypter;
+package adyen.com.adyencse.encrypter;
 
 import android.os.Build;
 import android.os.Process;

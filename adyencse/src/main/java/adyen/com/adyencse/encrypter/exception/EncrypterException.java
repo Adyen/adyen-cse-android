@@ -1,4 +1,4 @@
-package adyen.com.cse.encrypter.exception;
+package adyen.com.adyencse.encrypter.exception;
 
 /**
  * Created by andrei on 8/8/16.

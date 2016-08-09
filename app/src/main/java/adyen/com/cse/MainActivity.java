@@ -11,7 +11,8 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-import adyen.com.cse.encrypter.exception.EncrypterException;
+import adyen.com.adyencse.encrypter.exception.EncrypterException;
+import adyen.com.adyencse.pojo.Card;
 
 public class MainActivity extends AppCompatActivity {
 

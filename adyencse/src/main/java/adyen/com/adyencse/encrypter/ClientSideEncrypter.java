@@ -1,4 +1,4 @@
-package adyen.com.cse.encrypter;
+package adyen.com.adyencse.encrypter;
 
 import android.util.Base64;
 
@@ -22,7 +22,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-import adyen.com.cse.encrypter.exception.EncrypterException;
+import adyen.com.adyencse.encrypter.exception.EncrypterException;
+
 
 /**
  * Created by andrei on 8/8/16.

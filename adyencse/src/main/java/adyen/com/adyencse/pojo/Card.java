@@ -1,4 +1,4 @@
-package adyen.com.cse;
+package adyen.com.adyencse.pojo;
 
 import android.util.Log;
 
@@ -9,8 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import adyen.com.cse.encrypter.ClientSideEncrypter;
-import adyen.com.cse.encrypter.exception.EncrypterException;
+import adyen.com.adyencse.encrypter.ClientSideEncrypter;
+import adyen.com.adyencse.encrypter.exception.EncrypterException;
+
 
 /**
  * Created by andrei on 8/8/16.
