@@ -2,7 +2,6 @@ package adyen.com.cse;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -50,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
         Card card = buildCardData();
         try {
             String encryptedCardData = card.serialize(configuration.getString("publicKey"));
-
-            Log.i("=======> ", "ecryptedCard=" + encryptedCardData);
-
             mCseResult.setText(encryptedCardData);
         } catch (EncrypterException e) {
             e.printStackTrace();
