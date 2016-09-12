@@ -2,7 +2,7 @@
 This repository contains Adyen's Client Side Encryption (CSE) library for Android. With CSE card data is encrypted within the client, in this case the Android device, before you submit it via your own server to the Adyen API. By using CSE you reduce your scope of PCI compliance, because no raw card data travels through your server. This repository can be leveraged as a starting point to integrate Adyen's payment functionality fully in-app.
 
 ## Requirements
-The AdyenCSE-Android library is written in Java and is compatible with apps supporting Android 4.4 and up. Looking for the Android or web equivalent? We have the CSE library also available written in Objective-C ([AdyenCSE-Android](https://github.com/Adyen/AdyenCSE-iOS)) and JavaScript ([AdyenCSE-web](https://github.com/Adyen/CSE-JS)).
+The AdyenCSE-Android library is written in Java and is compatible with apps supporting Android 4.4 and up. Looking for the Android or web equivalent? We have the CSE library also available written in Objective-C ([adyen-cse-ios](https://github.com/Adyen/AdyenCSE-iOS)) and JavaScript ([adyen-cse-web](https://github.com/Adyen/CSE-JS)).
 
 All our CSE libraries rely on you [setting up your own server](https://docs.adyen.com/developers/easy-encryption#cardintegration) for communicating with the Adyen API. By using a server you ensure that API authentication credentials never get exposed. Please note that you need to have [signed up for an account at Adyen](https://www.adyen.com/signup) before you can send requests to the Adyen API.
 
