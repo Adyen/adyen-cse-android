@@ -1,4 +1,4 @@
-# AdyenCSE for Android
+# Adyen CSE for Android
 This repository contains Adyen's Client Side Encryption (CSE) library for Android. With CSE card data is encrypted within the client, in this case the Android device, before you submit it via your own server to the Adyen API. By using CSE you reduce your scope of PCI compliance, because no raw card data travels through your server. This repository can be leveraged as a starting point to integrate Adyen's payment functionality fully in-app.
 
 ## Requirements
