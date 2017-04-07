@@ -8,7 +8,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
     }
     buildTypes {
         release {
@@ -22,7 +22,7 @@ task prepareSDKRelease(type: Copy) {
     from 'build/outputs/aar/adyencse-release.aar'
     into '.'
     rename {String fileName ->
-        fileName.replace('release', '1.0.0');
+        fileName.replace('release', '1.0.1');
     }
 }
 
