@@ -39,7 +39,7 @@ AdyenCSE is available through a gradle task. To install it, simply execute the f
     ...
     
     task downloadAdyenLibrary(type: Download) {
-        src 'https://raw.githubusercontent.com/Adyen/AdyenCSE-Android/master/adyencse/adyencse-1.0.0.aar'
+        src 'https://github.com/Adyen/adyen-cse-android/blob/master/adyencse/adyencse-1.0.1.aar'
         dest('libs');
     }
     ```
