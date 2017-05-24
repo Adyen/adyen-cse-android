@@ -45,13 +45,17 @@ AdyenCSE is available through a gradle task. To install it, simply execute the f
     ```
    Once you run this task using `./gradlew downloadAdyenLibrary` command, the `adyencse` .aar file will be downloaded in you `libs` folder.
    
-3. Next add the following snippet in your `build.gradle` of the app module:
+3. Next add the following snippets in your `build.gradle` of the app module:
 
     ```json
     repositories {
         flatDir {
             dirs 'libs'
         }
+    }
+
+    dependencies {
+        compile(name:'adyencse-1.0.0', ext:'aar') 
     }
     ```
 
