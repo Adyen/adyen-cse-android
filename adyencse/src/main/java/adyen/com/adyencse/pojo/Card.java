@@ -5,7 +5,6 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -17,7 +16,7 @@ import adyen.com.adyencse.encrypter.exception.EncrypterException;
 /**
  * Created by andrei on 8/8/16.
  */
-public class Card implements Serializable {
+public class Card {
 
     private static final String tag = Card.class.getSimpleName();
 
@@ -100,6 +99,39 @@ public class Card implements Serializable {
         }
 
         return encryptedData;
+    }
+
+    /**
+     * @return masked card number if the number is already available and the number of digits is longer than 13. Otherwise empty string.
+     */
+    public String toMaskedCardNumber() {
+        if (number == null || number.length() < 14) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder(number.length());
+
+        sb.append(getMaskingChars(number.length())).append(getLastFourDigitsFromCardNumber(number));
+        return sb.toString();
+    }
+
+    private String getLastFourDigitsFromCardNumber(final String fullCardNumber) {
+        if (fullCardNumber != null && fullCardNumber.length() >= 14) {
+            return fullCardNumber.substring(fullCardNumber.length() - 4);
+        }
+        return "";
+    }
+
+    private String getMaskingChars(final int totalLength) {
+        int charsToMask = totalLength - 4;
+        if (charsToMask <= 0) {
+            return "";
+        }
+        char[] mask = new char[charsToMask];
+        while (charsToMask > 0) {
+            charsToMask--;
+            mask[charsToMask] = '*';
+        }
+        return new String(mask);
     }
 
     /*
