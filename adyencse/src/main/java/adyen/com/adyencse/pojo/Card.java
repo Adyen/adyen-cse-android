@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -16,7 +17,7 @@ import adyen.com.adyencse.encrypter.exception.EncrypterException;
 /**
  * Created by andrei on 8/8/16.
  */
-public class Card {
+public class Card implements Serializable {
 
     private static final String tag = Card.class.getSimpleName();
 
