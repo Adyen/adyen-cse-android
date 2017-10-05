@@ -17,7 +17,7 @@ To run the example project, clone the repo and run it from your IDE.
 AdyenCSE is available through a gradle task. To install it, simply add the following line in your dependencies.
 
 ```java
-compile 'com.adyen.cse:adyen-cse:1.0.2'
+compile 'com.adyen.cse:adyen-cse:1.0.4'
 ```
 
 ## Usage
@@ -27,14 +27,14 @@ compile 'com.adyen.cse:adyen-cse:1.0.2'
 String publicKey = @"10001|B243E873CB9220BAFE71...";
 
 //	Create card object
-Card card = new Card();
-card.setCardHolderName("John A...");
-card.setCvc("737");
-card.setExpiryMonth("08");
-card.setExpiryYear("2018");
-card.setGenerationTime(new Date());
-card.setNumber("55551...");
-return card;
+Card card = new Card.Builder()
+                    .setHolderName("John A...")
+                    .setCvc("737")
+                    .setExpiryMonth("08")
+                    .setExpiryYear("2018")
+                    .setGenerationTime(new Date())
+                    .setNumber("55551...")
+                    .build();
 
 //	Encrypt card data
 String encryptedCard = card.serialize(publicKey);

@@ -287,7 +287,7 @@ public class Card {
             require(card.cvc == null || (card.cvc.matches("[0-9]{3,4}")), "cvc must be null or have 3 to 4 digits.");
 
             requireNonNull(card.expiryMonth, "expiryMonth");
-            require(card.expiryMonth.matches("0[1-9]|1[0-2]"), "expiryMonth");
+            require(card.expiryMonth.matches("0?[1-9]|1[0-2]"), "expiryMonth must be between 1 and 12");
 
             requireNonNull(card.expiryYear, "expiryYear");
             require(card.expiryYear.matches("20\\d{2}"), "expiryYear must be in the second millennium and first century.");

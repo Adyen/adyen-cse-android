@@ -2,6 +2,7 @@ package adyen.com.cse;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             card = new Card.Builder()
                     .setHolderName("test")
-                    .setCvc(cardCvc)
+                    .setCvc(TextUtils.isEmpty(cardCvc) ? null : cardCvc)
                     .setExpiryMonth(cardExpiryDate.split("/")[0])
                     .setExpiryYear(cardExpiryDate.split("/")[1])
                     .setGenerationTime(new Date())
