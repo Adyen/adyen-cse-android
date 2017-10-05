@@ -48,25 +48,34 @@ public class MainActivity extends AppCompatActivity {
         ConfigLoader configLoader = new ConfigLoader();
         JSONObject configuration = configLoader.loadJsonConfiguration();
         Card card = buildCardData();
+
+        if (card == null) {
+            return;
+        }
+
         try {
             String encryptedCardData = card.serialize(configuration.getString("publicKey"));
             mCseResult.setText(encryptedCardData);
-        } catch (EncrypterException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (EncrypterException | JSONException e) {
+            mCseResult.setText(e.getLocalizedMessage());
         }
     }
 
     private Card buildCardData() {
-        Card card = new Card();
+        Card card = null;
 
-        card.setCardHolderName("test");
-        card.setCvc(cardCvc);
-        card.setExpiryMonth(cardExpiryDate.split("/")[0]);
-        card.setExpiryYear("20" + cardExpiryDate.split("/")[1]);
-        card.setGenerationTime(new Date());
-        card.setNumber(cardNumber);
+        try {
+            card = new Card.Builder()
+                    .setHolderName("test")
+                    .setCvc(cardCvc)
+                    .setExpiryMonth(cardExpiryDate.split("/")[0])
+                    .setExpiryYear(cardExpiryDate.split("/")[1])
+                    .setGenerationTime(new Date())
+                    .setNumber(cardNumber)
+                    .build();
+        } catch (NullPointerException | IllegalStateException | ArrayIndexOutOfBoundsException e) {
+            mCseResult.setText(e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+        }
 
         return card;
     }

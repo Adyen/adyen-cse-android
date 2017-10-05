@@ -19,6 +19,7 @@ import adyen.com.adyencse.encrypter.exception.EncrypterException;
 public class Card {
 
     private static final String tag = Card.class.getSimpleName();
+    private static final SimpleDateFormat GENERATION_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     private String number;
     private String expiryMonth;
@@ -27,10 +28,23 @@ public class Card {
     private String cvc;
     private Date generationTime;
 
+    static {
+        GENERATION_DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
+
+    /**
+     * @deprecated Use {@link Card.Builder} instead.
+     */
+    @Deprecated
+    public Card() {
+
+    }
+
     public String getNumber() {
         return number;
     }
 
+    @Deprecated
     public void setNumber(String number) {
         this.number = number;
     }
@@ -39,6 +53,7 @@ public class Card {
         return expiryMonth;
     }
 
+    @Deprecated
     public void setExpiryMonth(String expiryMonth) {
         this.expiryMonth = expiryMonth;
     }
@@ -47,6 +62,7 @@ public class Card {
         return expiryYear;
     }
 
+    @Deprecated
     public void setExpiryYear(String expiryYear) {
         this.expiryYear = expiryYear;
     }
@@ -55,6 +71,7 @@ public class Card {
         return cardHolderName;
     }
 
+    @Deprecated
     public void setCardHolderName(String cardHolderName) {
         this.cardHolderName = cardHolderName;
     }
@@ -63,6 +80,7 @@ public class Card {
         return cvc;
     }
 
+    @Deprecated
     public void setCvc(String cvc) {
         this.cvc = cvc;
     }
@@ -71,22 +89,24 @@ public class Card {
         return generationTime;
     }
 
+    @Deprecated
     public void setGenerationTime(Date generationTime) {
         this.generationTime = generationTime;
     }
 
-    /*
-    * Method that serializes the card data using our CSE class.
-    * */
+    /**
+     * Serializes and encrypts the data from the {@link Card}.
+     *
+     * @param publicKey The public key to encrypt with.
+     * @return The serialized and encrypted data from the {@link Card}.
+     * @throws EncrypterException If the {@link Card} could not be encrypted.
+     */
     public String serialize(String publicKey) throws EncrypterException {
         JSONObject cardJson = new JSONObject();
         String encryptedData = null;
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
         try {
-            cardJson.put("generationtime", simpleDateFormat.format(generationTime));
+            cardJson.put("generationtime", GENERATION_DATE_FORMAT.format(generationTime));
             cardJson.put("number", number);
             cardJson.put("holderName", cardHolderName);
             cardJson.put("cvc", cvc);
@@ -154,10 +174,8 @@ public class Card {
     public String toString() {
         JSONObject cardJson = new JSONObject();
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
-            cardJson.put("generationtime", simpleDateFormat.format(generationTime));
+            cardJson.put("generationtime", GENERATION_DATE_FORMAT.format(generationTime));
             if (number.length() >= 4) {
                 cardJson.put("number", number.substring(0, 3));
             }
@@ -169,4 +187,133 @@ public class Card {
         return cardJson.toString();
     }
 
+    /**
+     * Builder for {@link Card} objects.
+     */
+    public static final class Builder {
+        private final Card card;
+
+        public Builder() {
+            card = new Card();
+        }
+
+        /**
+         * Set the mandatory generation time.
+         *
+         * @param generationTime The generation time.
+         * @return The Builder instance.
+         */
+        public Builder setGenerationTime(Date generationTime) {
+            card.generationTime = generationTime;
+
+            return this;
+        }
+
+        /**
+         * Set the mandatory card number.
+         *
+         * @param number The card number.
+         * @return The Builder instance.
+         */
+        public Builder setNumber(String number) {
+            card.number = removeWhiteSpaces(number);
+
+            return this;
+        }
+
+        /**
+         * Set the optional card holder name.
+         *
+         * @param holderName The holder name.
+         * @return The Builder instance.
+         */
+        public Builder setHolderName(String holderName) {
+            card.cardHolderName = trimAndRemoveMultipleWhiteSpaces(holderName);
+
+            return this;
+        }
+
+        /**
+         * Set the optional card security code.
+         *
+         * @param cvc The card security code.
+         * @return The Builder instance.
+         */
+        public Builder setCvc(String cvc) {
+            card.cvc = removeWhiteSpaces(cvc);
+
+            return this;
+        }
+
+        /**
+         * Set the mandatory expiry month, e.g. "1" or "01" for January.
+         *
+         * @param expiryMonth The expiry month.
+         * @return The Builder instance.
+         */
+        public Builder setExpiryMonth(String expiryMonth) {
+            card.expiryMonth = removeWhiteSpaces(expiryMonth);
+
+            return this;
+        }
+
+        /**
+         * Set the mandatory expiry year, e.g. "2021".
+         *
+         * @param expiryYear The expiry year.
+         * @return The Builder instance.
+         */
+        public Builder setExpiryYear(String expiryYear) {
+            card.expiryYear = removeWhiteSpaces(expiryYear);
+
+            return this;
+        }
+
+        /**
+         * Performs some simple checks on the given {@link Card} object and builds it.
+         *
+         * @return The valid {@link Card} object.
+         * @throws NullPointerException If any mandatory field is null.
+         * @throws IllegalStateException If any field is in an illegal state.
+         */
+        public Card build() throws NullPointerException, IllegalStateException {
+            requireNonNull(card.generationTime, "generationTime");
+
+            requireNonNull(card.number, "number");
+            require(card.number.matches("[0-9]{8,19}"), "number must have 8 to 19 digits (inclusive).");
+
+            require(card.cardHolderName == null || card.cardHolderName.length() > 0, "cardHolderName must be null or not empty.");
+
+            require(card.cvc == null || (card.cvc.matches("[0-9]{3,4}")), "cvc must be null or have 3 to 4 digits.");
+
+            requireNonNull(card.expiryMonth, "expiryMonth");
+            require(card.expiryMonth.matches("0[1-9]|1[0-2]"), "expiryMonth");
+
+            requireNonNull(card.expiryYear, "expiryYear");
+            require(card.expiryYear.matches("20\\d{2}"), "expiryYear must be in the second millennium and first century.");
+
+            return card;
+        }
+
+        private String removeWhiteSpaces(String string) {
+            return string != null ? string.replaceAll("\\s", "") : null;
+        }
+
+        private String trimAndRemoveMultipleWhiteSpaces(String string) {
+            return string != null ? string.trim().replaceAll("\\s{2,}", " ") : null;
+        }
+
+
+        private void require(boolean condition, String message) throws IllegalStateException {
+            if (!condition) {
+                throw new IllegalStateException(message);
+            }
+        }
+
+        private void requireNonNull(Object object, String objectName) throws IllegalStateException {
+            if (object == null) {
+                throw new NullPointerException(String.format("%s may not be null.", objectName));
+            }
+        }
+    }
 }
