@@ -210,7 +210,7 @@ public class Card {
         }
 
         /**
-         * Set the mandatory card number.
+         * Set the optional card number.
          *
          * @param number The card number.
          * @return The Builder instance.
@@ -246,7 +246,7 @@ public class Card {
         }
 
         /**
-         * Set the mandatory expiry month, e.g. "1" or "01" for January.
+         * Set the optional expiry month, e.g. "1" or "01" for January.
          *
          * @param expiryMonth The expiry month.
          * @return The Builder instance.
@@ -258,7 +258,7 @@ public class Card {
         }
 
         /**
-         * Set the mandatory expiry year, e.g. "2021".
+         * Set the optional expiry year, e.g. "2021".
          *
          * @param expiryYear The expiry year.
          * @return The Builder instance.
@@ -278,19 +278,12 @@ public class Card {
          */
         public Card build() throws NullPointerException, IllegalStateException {
             requireNonNull(card.generationTime, "generationTime");
-
-            requireNonNull(card.number, "number");
-            require(card.number.matches("[0-9]{8,19}"), "number must have 8 to 19 digits (inclusive).");
-
+            require(card.number == null || card.number.matches("[0-9]{8,19}"), "number must be null or have 8 to 19 digits (inclusive).");
             require(card.cardHolderName == null || card.cardHolderName.length() > 0, "cardHolderName must be null or not empty.");
-
             require(card.cvc == null || (card.cvc.matches("[0-9]{3,4}")), "cvc must be null or have 3 to 4 digits.");
-
-            requireNonNull(card.expiryMonth, "expiryMonth");
-            require(card.expiryMonth.matches("0?[1-9]|1[0-2]"), "expiryMonth must be between 1 and 12");
-
-            requireNonNull(card.expiryYear, "expiryYear");
-            require(card.expiryYear.matches("20\\d{2}"), "expiryYear must be in the second millennium and first century.");
+            require(card.expiryMonth == null || card.expiryMonth.matches("0?[1-9]|1[0-2]"), "expiryMonth must be null or between 1 and 12.");
+            require(card.expiryYear == null
+                    || card.expiryYear.matches("20\\d{2}"), "expiryYear must be in the second millennium and first century.");
 
             return card;
         }

@@ -66,13 +66,15 @@ public class MainActivity extends AppCompatActivity {
         Card card = null;
 
         try {
+            String[] expiryDate = cardExpiryDate.split("/");
+
             card = new Card.Builder()
                     .setHolderName("test")
                     .setCvc(TextUtils.isEmpty(cardCvc) ? null : cardCvc)
-                    .setExpiryMonth(cardExpiryDate.split("/")[0])
-                    .setExpiryYear(cardExpiryDate.split("/")[1])
+                    .setExpiryMonth(expiryDate.length != 2 ? null : expiryDate[0])
+                    .setExpiryYear(expiryDate.length != 2 ? null : expiryDate[1])
                     .setGenerationTime(new Date())
-                    .setNumber(cardNumber)
+                    .setNumber(TextUtils.isEmpty(cardNumber) ? null : cardNumber)
                     .build();
         } catch (NullPointerException | IllegalStateException | ArrayIndexOutOfBoundsException e) {
             mCseResult.setText(e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
