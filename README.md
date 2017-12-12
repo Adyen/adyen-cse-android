@@ -17,7 +17,7 @@ To run the example project, clone the repo and run it from your IDE.
 AdyenCSE is available through a gradle task. To install it, simply add the following line in your dependencies.
 
 ```java
-compile 'com.adyen.cse:adyen-cse:1.0.4'
+compile 'com.adyen.cse:adyen-cse:1.0.5'
 ```
 
 ## Usage
